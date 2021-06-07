@@ -1,0 +1,93 @@
+void SVG::loadFromFile()
+{
+    if(this->filename != nullptr)
+    {
+        std::ifstream in(this->filename);
+        char line[256];
+    
+        while(!in.eof())
+        {
+            char name[16];
+            in >> name;
+            if(strcmp(name,"<rectangle") == 0)
+            {
+                char current[64];
+                in >>  current;
+                while (strcmp (current, "/>") != 0)
+                {
+                    String key;
+                    String value;
+                    size_t i = 0;
+                    for (; current[i] != '='; i++)
+                    {
+                        key.push_back(current[i]);
+                    }
+                    i++;
+                    for (; current[i] != '\0'; i++)
+                    {
+                        value.push_back(current[i]);
+                    }
+                    std::cout << key << '=' << value;
+                    
+                    in >>  current;
+
+                }
+                std::cout << std::endl << "--------------------" <<std::endl;
+            }
+            else if(strcmp(name,"<circle") == 0)
+            {
+                char current[64];
+                in >>  current;
+                while (strcmp (current, "/>") != 0)
+                {
+                    String key;
+                    String value;
+                    size_t i = 0;
+                    for (; current[i] != '='; i++)
+                    {
+                        key.push_back(current[i]);
+                    }
+                    i++;
+                    for (; current[i] != '\0'; i++)
+                    {
+                        value.push_back(current[i]);
+                    }
+                    std::cout << key << '=' << value;
+                    
+                    in >>  current;
+
+                }
+                std::cout<< std::endl << "--------------------" <<std::endl;
+            }
+            else if(strcmp(name,"<line") == 0)
+            {
+                char current[64];
+                in >>  current;
+                while (strcmp (current, "/>") != 0)
+                {
+                    String key;
+                    String value;
+                    size_t i = 0;
+                    for (; current[i] != '='; i++)
+                    {
+                        key.push_back(current[i]);
+                    }
+                    i++;
+                    for (; current[i] != '\0'; i++)
+                    {
+                        value.push_back(current[i]);
+                    }
+                    std::cout << key << '=' << value ;
+                    
+                    in >>  current;
+
+                }
+                std::cout << std::endl << "--------------------" <<std::endl;
+            }
+        }
+    }
+    else
+    {
+        std::cout << "No opened file exists!"<<std::endl;
+    }
+}

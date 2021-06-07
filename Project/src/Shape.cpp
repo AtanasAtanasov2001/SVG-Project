@@ -12,10 +12,10 @@ Shape::Shape(int x_, int y_)
 
 //getters and setters
 
-int Shape::getX() {return x ;}
-int Shape::getY() {return y ;}
+int Shape::getX()const {return x ;}
+int Shape::getY()const  {return y ;}
 
-char* Shape::getColor()
+char* Shape::getColor() const
 {
     return color;
 }
