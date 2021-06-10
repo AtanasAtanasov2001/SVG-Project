@@ -3,6 +3,10 @@
 
 template<typename T>
 class Vector {
+
+private:
+	T* data;
+	int size;
 public:
 	Vector();
 	Vector(const Vector<T>& others);
@@ -11,6 +15,7 @@ public:
 	
 	const T operator[](int index) const;
 	T& operator[](int index);
+	
 	Vector<T>& operator=(const Vector<T>& others);
 
 	void print() const;
@@ -21,9 +26,7 @@ public:
 	void destroy();
 	int getSize() const;
 
-private:
-	T* data;
-	int size;
+
 };
 
 
@@ -48,16 +51,20 @@ Vector<T>::~Vector() {
 }
 
 template<typename T>
-const T Vector<T>::operator[](int index) const {
-	if(index < 0 || index > size - 1){
+const T Vector<T>::operator[](int index) const 
+{
+	if(index < 0 || index > size - 1)
+	{
 		std::cout << "Wrong index.";
 		return data[0];
 	}
 	return data[index];
 }
 template<typename T>
-T& Vector<T>::operator[](int index) {
-	if (index < 0 || index > size - 1) {
+T& Vector<T>::operator[](int index) 
+{
+	if (index < 0 || index > size - 1) 
+	{
 		std::cout << "Wrong index.";
 		return data[0];
 	}
@@ -143,6 +150,7 @@ void Vector<T>::destroy()
 	size = 0;
 }
 template<typename T>
-int Vector<T>::getSize() const {
+int Vector<T>::getSize() const 
+{
 	return this->size;
 }

@@ -25,10 +25,12 @@ void Shape::setY(int new_y) {y = new_y;}
 
 void Shape::setColor(char* color_)
 {
-    color = color_;
+    color = new char[strlen(color_) + 1];
+    strcpy(color, color_);
 }
 void Shape::setColor(const char* color_)
 {
+    color = new char[strlen(color_) + 1];
     strcpy(color,color_);
 }
 

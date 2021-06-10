@@ -75,6 +75,6 @@ void Circle::saveToFile(char* fileName)
 void  Circle :: print()
 {
     std::cout << "The Circle that you inputed is at: " << getX() << "," << getY() <<
-    " with radius:" << getRadius() << ", color: "<< getColor() << ", Perimetre:  "<< getPerimeter() << ", Area: " << getArea() << "and Volume: "
+    " with radius: " << getRadius() << ", color: "<< getColor() << ", Perimetre:  "<< getPerimeter() << ", Area: " << getArea()
     << std::endl;
 }

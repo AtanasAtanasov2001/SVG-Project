@@ -89,7 +89,7 @@ void Rectangle::saveToFile(char* fileName)
 //print
 void Rectangle::print()
 {
-    std::cout << "The rectangle that you inputed is at: " << getX() << "," << getY() <<
+    std::cout << "The rectangle that you inputed is at: " << getX() << ", " << getY() <<
     " with width: " << getWidth() << ", height: " << getHeight() <<", color: " << getColor() << std::endl;
     std::cout << "It's  perimeter is : " << getPerimeter() << " and area: " << getArea() << std::endl;
 }

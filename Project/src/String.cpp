@@ -128,11 +128,26 @@ bool String::operator!=(const char* other) const
     }
     return flag;
 }
-String& String::push_back(const char& other)
+
+int String::castToInt() const {
+  int result = 0;
+  for (size_t i = 0; this->data[i] != '\0'; i++)
+  {
+    if (this->data[i] < '0' || this->data[i] > '9')
+    {
+      throw std::invalid_argument( "Recieved something that is not a number!!" );
+    }
+    
+    result = result*10 + (this->data[i] - '0');
+  }
+
+  return result;
+  
+}
+void String::push_back(const char other)
 {
     data[length++] = other;
     data[length] = '\0';
-    
 }
 
 
