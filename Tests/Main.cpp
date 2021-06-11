@@ -101,13 +101,13 @@ TEST_CASE("Within functions")
     int rectangle_x(0),rectangle_y(0),rectangle_width(30),rectangle_height(30);
     
     //figures that i tested in the main and work!!
-    Circle pupka(5,5,6,"Blue");
-    Circle kur(6,4,6,"silver");
+    Circle c1(5,5,6,"Blue");
+    Circle c2(6,4,6,"silver");
     Line liniika(4,6,6,8,"green");
 
     CHECK(liniika.within(rectangle_x,rectangle_y,rectangle_width,rectangle_height));//line within rectangle
-    CHECK(liniika.within(kur.getX(), kur.getY(), kur.getRadius()));//line within circle
-    CHECK (pupka.within(rectangle_x,rectangle_y,rectangle_width,rectangle_height));//circle within rectangle
+    CHECK(liniika.within(c2.getX(), c2.getY(), c2.getRadius()));//line within circle
+    CHECK (c1.within(rectangle_x,rectangle_y,rectangle_width,rectangle_height));//circle within rectangle
     Circle bigCircle(4,3,3);
     Circle smallCircle(4,2,1);
     CHECK (smallCircle.within(bigCircle.getX(), bigCircle.getY(), bigCircle.getRadius()));//circle within circle

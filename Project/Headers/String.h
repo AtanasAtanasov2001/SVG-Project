@@ -33,7 +33,8 @@ class String
     bool operator==(const char* other) const;
     bool operator!=(String& other) const;
     bool operator!=(const char* other) const;
-    String& push_back(const char&);
+    int castToInt() const;
+    void push_back(const char);
     String& pop_back();
     friend std::ostream& operator<< (std::ostream& out, const String&);
     friend std::istream& operator>> (std::istream& in, String& other);

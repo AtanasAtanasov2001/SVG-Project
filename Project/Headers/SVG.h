@@ -21,6 +21,7 @@ class SVG : public Menu
     Shape* createFigure ();
     void saveToFile();
     void loadFromFile();
+    void print();
 
     Vector<Shape*> within(Rectangle& newShape);
     Vector<Shape*> within(Circle& newShape);

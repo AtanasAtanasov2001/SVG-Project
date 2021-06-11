@@ -15,7 +15,6 @@ SVG::~SVG()
 }
 void SVG::addFigure(Shape* figure)
 {
-    figure->saveToFile(filename);
     figures.push_back(figure);
 }
 
@@ -26,31 +25,45 @@ Shape* SVG::createFigure()
     size_t r,width,height,x1,y1;
     String typeOfShape;
 
+    String current;
+
     std::cout << "Enter the new shape's type: ";
     std::cin >> typeOfShape;
 
     std::cout << "Enter the new shape's coordinates: ";
-    std::cin >> x >> y; 
-
+    std::cin >> current;
+    x = current.castToInt();
+    std::cin >> current;
+    y = current.castToInt();
+    
     std::cout << "Enter the color of your shape: ";
     std::cin >> color;
 
     if(typeOfShape == "Rectangle" )
     {
         std::cout << "Enter the width and height of your rectangle: ";
-        std::cin >> width >> height;
+
+        std::cin >> current;
+        width = current.castToInt();
+        std::cin >> current;
+        height = current.castToInt();
+        
         return new Rectangle(x,y,width,height,color.getData());
     }
     else if (typeOfShape == "Circle")
     {
         std::cout << "Enter your circle's radius: ";
-        std::cin >> r;
+        std::cin >> current;
+        r = current.castToInt();
         return  new Circle(x,y,r,color.getData());
     }
     else
     {
         std::cout << "Enter the other dot, that forms the line: ";
-        std::cin >> x1 >> y1;
+        std::cin >> current;
+        x1 = current.castToInt();
+        std::cin >> current;
+        y1 = current.castToInt();
         return new Line(x,y,x1,y1 ,color.getData());
     }
 }
@@ -82,87 +95,168 @@ void SVG::loadFromFile()
     {
         std::ifstream in(this->filename);
         char line[256];
-    
-        while(!in.eof())
+
+        if(in.good())
         {
-            char name[16];
-            in >> name;
-            if(strcmp(name,"<rectangle") == 0)
+            while(!in.eof())
             {
-                char current[64];
-                in >>  current;
-                while (strcmp (current, "/>") != 0)
+                char name[16];
+                in >> name;
+                if(strcmp(name,"<rectangle") == 0)
                 {
-                    String key;
-                    String value;
-                    size_t i = 0;
-                    for (; current[i] != '='; i++)
-                    {
-                        key.push_back(current[i]);
-                    }
-                    i++;
-                    for (; current[i] != '\0'; i++)
-                    {
-                        value.push_back(current[i]);
-                    }
-                    std::cout << key << '=' << value;
-                    
+                    char current[64];
                     in >>  current;
-
+                    Rectangle newrec;
+                    while (strcmp (current, "/>") != 0)
+                    {
+                        String key;
+                        String value;
+                        size_t i = 0;
+                        for (; current[i] != '='; i++)
+                        {
+                            key.push_back(current[i]);
+                        }
+                        i++;
+                        for (; current[i] != '\0'; i++)
+                        {   
+                            if (current[i] != '\"')
+                            {
+                                value.push_back(current[i]);
+                            }
+                        }
+                        if (key == "x")
+                        {
+                            newrec.setX(value.castToInt());
+                        }
+                        else if (key == "y")
+                        {
+                            newrec.setY(value.castToInt());
+                        }
+                        else if (key == "width")
+                        {
+                            newrec.setWidth(value.castToInt());
+                        }
+                        else if (key == "heigth")
+                        {
+                            newrec.setHeight(value.castToInt());
+                        }
+                        else if (key == "fill")
+                        {
+                            newrec.setColor(value.getData());
+                        }
+                        in >>  current;
+                    }
+                    figures.push_back(new Rectangle(newrec));
                 }
-                std::cout << std::endl << "--------------------" <<std::endl;
-            }
-            else if(strcmp(name,"<circle") == 0)
-            {
-                char current[64];
-                in >>  current;
-                while (strcmp (current, "/>") != 0)
+            
+                else if(strcmp(name,"<circle") == 0)
                 {
-                    String key;
-                    String value;
-                    size_t i = 0;
-                    for (; current[i] != '='; i++)
-                    {
-                        key.push_back(current[i]);
-                    }
-                    i++;
-                    for (; current[i] != '\0'; i++)
-                    {
-                        value.push_back(current[i]);
-                    }
-                    std::cout << key << '=' << value;
-                    
+                    Circle newCircle;
+                    char current[64];
                     in >>  current;
-
+                    while (strcmp (current, "/>") != 0)
+                    {
+                        String key;
+                        String value;
+                        size_t i = 0;
+                        for (; current[i] != '='; i++)
+                        {
+                            key.push_back(current[i]);
+                        }
+                        i++;
+                        for (; current[i] != '\0'; i++)
+                        {
+                            if (current[i] != '\"')
+                            {
+                                value.push_back(current[i]);
+                            }
+                        }
+                        if (key == "x")
+                        {
+                            newCircle.setX(value.castToInt());
+                        }
+                        else if (key == "y")
+                        {
+                            newCircle.setY(value.castToInt());
+                        }
+                        else if (key == "radius")
+                        {
+                            newCircle.setRadius(value.castToInt());
+                        }
+                        else if (key == "fill")
+                        {
+                            newCircle.setColor(value.getData());
+                        }
+                        
+                        in >>  current;
+                    }
+                    figures.push_back(new Circle(newCircle));
                 }
-                std::cout<< std::endl << "--------------------" <<std::endl;
-            }
-            else if(strcmp(name,"<line") == 0)
-            {
-                char current[64];
-                in >>  current;
-                while (strcmp (current, "/>") != 0)
+                else if(strcmp(name,"<line") == 0)
                 {
-                    String key;
-                    String value;
-                    size_t i = 0;
-                    for (; current[i] != '='; i++)
-                    {
-                        key.push_back(current[i]);
-                    }
-                    i++;
-                    for (; current[i] != '\0'; i++)
-                    {
-                        value.push_back(current[i]);
-                    }
-                    std::cout << key << '=' << value ;
-                    
+                    Line newLine;
+                    char current[64];
                     in >>  current;
-
+                    while (strcmp (current, "/>") != 0)
+                    {
+                        String key;
+                        String value;
+                        size_t i = 0;
+                        for (; current[i] != '='; i++)
+                        {
+                            key.push_back(current[i]);
+                        }
+                        i++;
+                        for (; current[i] != '\0'; i++)
+                        {
+                            if (current[i] != '\"')
+                            {
+                                value.push_back(current[i]);
+                            }
+                        }
+                        if (key == "x")
+                        {
+                            newLine.setX(value.castToInt());
+                        }
+                        else if (key == "y")
+                        {
+                            newLine.setY(value.castToInt());
+                        }
+                        else if (key == "x1")
+                        {
+                            newLine.setLineX(value.castToInt());
+                        }
+                        else if (key == "y1")
+                        {
+                            newLine.setLineY(value.castToInt());
+                        }
+                        else if (key == "fill")
+                        {
+                            newLine.setColor(value.getData());
+                        }
+                        
+                        in >>  current;
+                    }
+                    figures.push_back(new Line(newLine));
                 }
-                std::cout << std::endl << "--------------------" <<std::endl;
             }
         }
+        in.close();
+    }
+    else
+    {
+        std::cout << "No opened file exists!"<<std::endl;
+    }
+}
+
+void SVG::print()
+{
+    if(this->filename != nullptr)
+    {
+       for (size_t i = 0; i < figures.getSize(); ++i)
+       {
+           figures[i]->print();
+       } 
     }
     else
     {
@@ -196,10 +290,12 @@ Vector<Shape*> SVG::within(Circle& newShape)
 }
 void SVG::translate()
 {
-    char* answer;
+    char answer[64];
     int number;
     std::cout << "Would you like to translate a sigle figure or the whole vector?"<<std::endl;
-    std::cin >> answer;
+    std::cin.ignore();
+    std::cin.getline(answer, 64);
+
     if (strcmp(answer, "Single Figure") == 0)
     {
         int new_x, new_y;
@@ -215,7 +311,7 @@ void SVG::translate()
         figures[number]->translate(new_x,new_y);
         figures[number]->print();
     }
-    else
+    else if(strcmp(answer, "Whole vector") == 0)
     {
         int new_x, new_y;
         std::cout << "Enter the new coordinates for your figures:" << std::endl;
@@ -238,6 +334,10 @@ void SVG::translate()
         }
         
     }
+    else
+    {
+        std::cout << "Wrong choice!!"<<std::endl;
+    }
     
     
 }
@@ -246,9 +346,19 @@ void SVG::start()
     int flag;
     do
     {
+        std::cout <<"   ______        ________ _______           _            _ "<<std::endl;  
+        std::cout <<"  / ____\\ \\      / / ____| |  __ \\         (_)          | | "<<std::endl;  
+        std::cout <<"  | (___\\  \\    / / |  __  | |__) | __ ___  _  ___  ___ | |_"<<std::endl;  
+        std::cout <<"   \\___ \\   \\  / /| | |_ | |  ___/ '__/ _  \\ |/ __\\ / __| __|"<<std::endl; 
+        std::cout <<"   ____) |   \\  / | |__| | | |   | |  | (_)| |  __ / (__| |_ "<<std::endl; 
+        std::cout <<"  |_____/     \\/   \\_____| |_|   |_|  \\___/| |\\__| \\___|\\__| "<<std::endl; 
+        std::cout <<"                                          _/ |                "<<std::endl; 
+        std::cout <<"                                         |__/                   " <<std::endl;
+
         std::cout << "Enter: ";
         command = "";
         std::cin >> command;
+        flag = -1;
         for(int i = 0; i < menu.getSize(); i++)
         {
             if(command == menu[i])
@@ -257,22 +367,33 @@ void SVG::start()
                 break;
             }
         }
+        
         switch(flag)
         {
             case 0: //Open
             {
-                char filename_[64];
-                std::cout << "Enter the name of the file you want to save your figures to: ";
-                std::cin >> filename_;
-                this->filename = new char[strlen(filename_)+ 1];
-                strcpy(this->filename,filename_);
-                //loadfromfile 
-                std::cout << "Successfully opened " << this->filename << std::endl;
+                if (this->filename == nullptr)
+                {
+                    char filename_[64];
+                    std::cout << "Enter the name of the file you want to save your figures to: ";
+                    std::cin >> filename_;
+                    if(filename_ != nullptr)
+                    {
+                        this->filename = new char[strlen(filename_)+ 1];
+                        strcpy(this->filename,filename_);
+                        loadFromFile();
+                    }
+                    std::cout << "Successfully opened " << this->filename << std::endl;
+                } 
+                else 
+                {
+                    std::cout << "A file is already opened" << std::endl;
+                }
                 break;
             }
             case 1: //Close
             {   
-                //delete the vector
+                figures.destroy();
                 std::cout << "Successfully closed " << this->filename<<std::endl;
                 this->filename = nullptr;
                 break;
@@ -285,19 +406,22 @@ void SVG::start()
             }
             case 3://Saveas
             {
-                char* filename_;
-                std::cout << "Enter the name of the file you want to save your figures to: ";
-                std::cin >> filename_;
-                //zadeli poveche pamet za filename!!!
-                strcpy(filename_, this->filename);
+                    char filename_[64];
+                    std::cout << "Enter the name of the file you want to save your figures to: ";
+                    std::cin >> filename_;
+                    if(filename_ != nullptr)
+                    {
+                        this->filename = new char[strlen(filename_)+ 1];
+                        strcpy(this->filename,filename_);
+                    }
+    
                 saveToFile();
+                std::cout << "Successfully saved to " << filename << std::endl;
                 break;
             }
             case 4://print
             {
-                //metod print!
-                //loadfrom file da ne printira!!
-                this->loadFromFile();
+                this->print();
                 break;
             }
             case 5://within
@@ -313,9 +437,15 @@ void SVG::start()
 
                     Rectangle newFigure(x_rec,y_rec,width_rec,height_rec);
                     Vector<Shape*> v = within(newFigure);
+
                     for (size_t i = 0; i < v.getSize(); i++)
                     {
                         v[i]->print();
+                    }
+                    if (v.getSize() == 0)
+                    {
+                        std::cout << "No figures are located within rectangle "<< x_rec << " " << y_rec << " "
+                                                                               << width_rec << " "<< height_rec << std::endl;
                     }
                 }
                 if(type == "Circle")
@@ -330,7 +460,14 @@ void SVG::start()
                     {
                         v[i]->print();
                     }
+                    if (v.getSize() == 0)
+                    {
+                        std::cout << "No figures are located within circle "<< x_circle << " "<< y_circle << " "
+                                                                            << radius << std::endl;
+                    }
+                    
                 }
+                
                 break;
             }
             case 6://erase
@@ -344,13 +481,19 @@ void SVG::start()
             }
             case 7://create
             {
-                //addfigure ne tryabva da raboti po file-a!!
-                addFigure(createFigure());
+                
+                try 
+                {
+                    addFigure(createFigure());
+                } 
+                catch(const std::exception& exception_) 
+                {
+                    std::cout << "Exception: " << exception_.what() << std::endl;
+                } 
                 break;
             }
             case 8://translate
             {
-                //test
                 translate();
                 break;
             }

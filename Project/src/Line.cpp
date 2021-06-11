@@ -36,6 +36,7 @@ double Line::getLength()const
     double sbor = pow((abs(this->x - this->line_x)), 2) + pow((abs(this->y - this->line_y)), 2);
     return sqrt(sbor);
 }
+
 double Line::getPerimeter()const {return getLength();}
 double Line::getArea()const {return 0;}
 
@@ -67,7 +68,7 @@ void Line::saveToFile(char* fileName)
 }
 void Line::print()
 {
-    std::cout << "The Line that you inputed is at: " << getX() << "," << getY() << "with length" << getLength()<<
-    "and color:" << getColor() << std::endl;
+    std::cout << "The Line that you inputed is at: " << getX() << "," << getY() << " with length: " << getLength()<<
+    " and color: " << getColor() << std::endl;
    
 }
