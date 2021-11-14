@@ -311,7 +311,7 @@ void SVG::translate()
         figures[number]->translate(new_x,new_y);
         figures[number]->print();
     }
-    else if(strcmp(answer, "Whole vector") == 0)
+    else if(strcmp(answer, "Whole Vector") == 0)
     {
         int new_x, new_y;
         std::cout << "Enter the new coordinates for your figures:" << std::endl;
@@ -342,11 +342,7 @@ void SVG::translate()
     
 }
 void SVG::start()
-{
-    int flag;
-    do
-    {
-        std::cout <<"   ______        ________ _______           _            _ "<<std::endl;  
+{       std::cout <<"   ______        ________ _______           _            _ "<<std::endl;  
         std::cout <<"  / ____\\ \\      / / ____| |  __ \\         (_)          | | "<<std::endl;  
         std::cout <<"  | (___\\  \\    / / |  __  | |__) | __ ___  _  ___  ___ | |_"<<std::endl;  
         std::cout <<"   \\___ \\   \\  / /| | |_ | |  ___/ '__/ _  \\ |/ __\\ / __| __|"<<std::endl; 
@@ -354,6 +350,11 @@ void SVG::start()
         std::cout <<"  |_____/     \\/   \\_____| |_|   |_|  \\___/| |\\__| \\___|\\__| "<<std::endl; 
         std::cout <<"                                          _/ |                "<<std::endl; 
         std::cout <<"                                         |__/                   " <<std::endl;
+
+    int flag;
+    do
+    {
+  
 
         std::cout << "Enter: ";
         command = "";
